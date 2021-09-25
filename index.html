@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">  
+    <title>Calculate Tax</title>
+    <link rel="stylesheet" href="tax.css">
+    <script>
+        "use strict";
+        
+    const $ = selector => document.querySelector(selector);
+
+    const getErrorMsg = lbl => `${lbl} must be a valid number greater than zero.`;
+    const getErrortaxRate = lbl => `${lbl} must be a valid number greater than zero and less than 1.`;
+
+    const focusAndSelect = selector => {
+        const elem = $(selector);
+            elem.focus();
+            elem.select();
+};
+
+
+     const calculateTax = (subtotal, taxRate) => {
+      const taxAmount = subtotal * taxRate;
+      return taxAmount;
+     };
+
+    const processEntries = () => {
+            const sale = parseFloat($("#sale").value);
+            const tax = parseFloat($("#tax").value);
+
+            if (isNaN(sale) || tax <= 0) {
+                alert(getErrorMsg("sale"));
+                focusAndSelect("#sale");
+
+            } else if (isNaN(tax) || tax <= 0 || tax >= 1 ) {
+                alert(getErrortaxRate("tax"));
+                focusAndSelect("#tax");
+            }
+            else {
+             //   const taxAmount = calculateTax(sale, tax);
+              $("#total").value = (sale + calculateTax(sale, tax)).toFixed(2); 
+            //   $("#total").value = sale + (sale * tax); 
+            } 
+        };
+
+        const clearEntries = () => {
+            $("#sale").value = "";
+            $("#tax").value = "";
+            $("#total").value = "";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            $("#calculate").addEventListener("click", processEntries);
+            $("#sale").focus();
+        } );
+        
+    </script>
+</head>
+<body>
+    <main>
+        <h1>Tax Calculator</h1>
+        <div>
+        <label for="sale">Sale Amount:</label>
+        <input type="text" id="sale">
+
+        <label for="tax">Tax:</label> 
+        <input type="text" id="tax">
+
+        <label for="total">Total:</label>
+        <input type="text" id="total">
+            </div>
+            <div>
+        <label>&nbsp;</label>
+        <input type="button" id="calculate" value="Calculate Total">
+        </div>
+    </main>
+</body>
+</html>
